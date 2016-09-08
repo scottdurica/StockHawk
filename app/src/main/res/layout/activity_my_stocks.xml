@@ -6,17 +6,46 @@
     android:layout_height="match_parent"
     >
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+
+  <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/tv_no_active_connection"
+      android:visibility="visible"
+      android:gravity="center"
+      android:focusable="true"
+      android:paddingTop="@dimen/no_active_connection_textview_top_bottom_padding"
+      android:paddingBottom="@dimen/no_active_connection_textview_top_bottom_padding"
+      android:textColor="@android:color/holo_red_light"
+      android:text="@string/no_active_connection_message"/>
+
   <android.support.v7.widget.RecyclerView
       android:id="@+id/recycler_view"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
+      android:focusable="true"
       />
+  <TextView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:id="@+id/tv_empty_rv_view"
+      android:gravity="center"
+      android:visibility="gone"
+      android:text="@string/empty_rv_message"
+      android:focusable="true"/>
 
+    </LinearLayout>
   <com.melnykov.fab.FloatingActionButton
       android:id="@+id/fab"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_gravity="bottom|right"
+      android:layout_gravity="bottom|end"
       android:layout_margin="16dp"
       android:src="@drawable/ic_add_white_24dp"
       fab:fab_colorNormal="@color/material_blue_500"
@@ -26,5 +55,7 @@
       fab:fab_type="normal"
       fab:layout_anchor="recycler_view"
       fab:layout_anchorGravity="bottom | end"
+      android:contentDescription="@string/cd_add_stock_button"
+      android:focusable="true"
       />
 </FrameLayout>

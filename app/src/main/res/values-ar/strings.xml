@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">الأسهم هوك</string>
+
+    <string name="action_settings">إعدادات</string>
+    <string name="action_change_units">وحدات التغيير</string>
+    <string name="symbol_search">رمز البحث</string>
+    <string name="content_test">البحث عن رمز السهم</string>
+    <string name="input_hint">أدخل اسم السهم</string>
+    <string name="input_prefill"></string>
+    <string name="network_toast">هذا التطبيق يتطلب اتصال بالإنترنت</string>
+    <string name="pref_invalid_stock_symbol" translatable="false">invalid_stock_symbol</string>
+    <string name="empty_rv_message">لا تتوافر بيانات</string>
+    <string name="cd_add_stock_button">إضافة أسهم</string>
+    <string name="appwidget_text">مثال</string>
+    <string name="add_widget">إضافة القطعة</string>
+    <string name="tv_empty_widget_lv">لا تتوافر بيانات</string>
+    <string name="detail_static_current_price">السعر الحالي</string>
+    <string name="detail_static_30_day_average">30 يوم متوسط</string>
+    <string name="detail_static_30_day_hi_lo">30 يوم مرحبا / لو</string>
+    <string name="stock_widget_title">الأسهم هوك</string>
+
+    <!-- Strings implemented in the Java code-->
+    <string name="input_dialog_pre_variable">لا يمكن إضافة رمز</string>
+    <string name="input_dialog_post_variable">حاول مرة اخرى</string>
+    <string name="toast_stock_already_saved">يتم حفظ هذه الأسهم بالفعل!</string>
+
+    <string name="no_active_connection_message">غير متصل. قد تكون قديمة البيانات.</string>
+    <string name="no_network_no_add_allowed">لا توجد شبكة. لا يمكن إضافة الأسهم.</string>
+    <string name="no_network_no_details_view">لا توجد شبكة. لا يمكن أن تظهر تفاصيل الأسهم .</string>
+
+</resources>

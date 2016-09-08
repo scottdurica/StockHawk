@@ -1,13 +1,31 @@
 <resources>
-  <string name="app_name">Stock Hawk</string>
+    <string name="app_name">Stock Hawk</string>
 
-  <string name="action_example">Example action</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_change_units">Change Units</string>
+    <string name="symbol_search">Symbol Search</string>
+    <string name="content_test">Search for a Stock Symbol</string>
+    <string name="input_hint">Enter stock name</string>
+    <string name="input_prefill"></string>
+    <string name="network_toast">This app requires an internet connection</string>
+    <string name="pref_invalid_stock_symbol" translatable="false">invalid_stock_symbol</string>
+    <string name="empty_rv_message">No Data Available</string>
+    <string name="cd_add_stock_button">Add Stock</string>
+    <string name="appwidget_text" translatable="false">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="tv_empty_widget_lv">No daa available</string>
+    <string name="detail_static_current_price">Current Price</string>
+    <string name="detail_static_30_day_average">30 Day Average</string>
+    <string name="detail_static_30_day_hi_lo">30 Day Hi/Lo</string>
+    <string name="stock_widget_title">Stock Hawk</string>
 
-  <string name="action_settings">Settings</string>
-  <string name="action_change_units">Change Units</string>
-  <string name="symbol_search">Symbol Search</string>
-  <string name="content_test">Search for a Stock Symbol</string>
-  <string name="input_hint">FB</string>
-  <string name="input_prefill"></string>
-  <string name="network_toast">Uh-oh! This app requires an internet connection</string>
+    <!-- Strings implemented in the Java code-->
+    <string name="input_dialog_pre_variable">Cannot add symbol </string>
+    <string name="input_dialog_post_variable">Please try again</string>
+    <string name="toast_stock_already_saved">This stock is already saved!</string>
+
+    <string name="no_active_connection_message">Not Connected. Data may be outdated.</string>
+    <string name="no_network_no_add_allowed">No Network. Cannot add stocks. </string>
+    <string name="no_network_no_details_view">No Network. Cannot show stock details.</string>
+
 </resources>

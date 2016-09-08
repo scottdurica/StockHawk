@@ -25,4 +25,23 @@ public class QuoteColumns {
   public static final String ISUP = "is_up";
   @DataType(DataType.Type.INTEGER) @NotNull
   public static final String ISCURRENT = "is_current";
+
+  public static final String []STOCK_COLUMNS = {
+          QuoteColumns._ID,
+          QuoteColumns.BIDPRICE,
+          QuoteColumns.SYMBOL,
+          QuoteColumns.CHANGE,
+          QuoteColumns.CREATED,
+          QuoteColumns.PERCENT_CHANGE,
+          QuoteColumns.ISUP,
+          QuoteColumns.ISCURRENT
+  };
+  public static final int INDEX_ID = 0;
+  public static final int INDEX_BID_PRICE = 1;
+  public static final int INDEX_SYMBOL = 2;
+  public static final int INDEX_CHANGE = 3;
+  public static final int INDEX_CREATED = 4;
+  public static final int INDEX_PERCENT_CHANGE = 5;
+  public static final int INDEX_IS_UP = 6;
+  public static final int INDEX_IS_CURRENT = 7;
 }

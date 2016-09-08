@@ -1,9 +1,36 @@
 <resources>
-  <!-- Default screen margins, per the Android Design guidelines. -->
-  <dimen name="activity_horizontal_margin">16dp</dimen>
-  <dimen name="activity_vertical_margin">16dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
 
-  <!-- Per the design guidelines, navigation drawers should be between 240dp and 320dp:
+    <!-- Per the design guidelines, navigation drawers should be between 240dp and 320dp:
          https://developer.android.com/design/patterns/navigation-drawer.html -->
-  <dimen name="navigation_drawer_width">240dp</dimen>
+    <dimen name="navigation_drawer_width">240dp</dimen>
+
+    <!--
+Refer to App Widget Documentation for margin information
+http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
+    -->
+    <dimen name="widget_margin">8dp</dimen>
+    <dimen name="detail_container_margin">10dp</dimen>
+    <dimen name="detail_symbol_name_padding">8dp</dimen>
+    <dimen name="detail_symbol_name_textsize">36sp</dimen>
+    <dimen name="detail_chartview_container_padding">10dp</dimen>
+    <dimen name="detail_chartview_layout_height">300dp</dimen>
+    <dimen name="detail_static_text_padding">8dp</dimen>
+    <dimen name="detail_common_textview_padding_left_right">10sp</dimen>
+    <dimen name="list_item_quote_container_padding_left_right">16dp</dimen>
+    <dimen name="list_item_quote_bid_price_padding_left_right">10sp</dimen>
+    <dimen name="list_item_quote_change_padding_left_right">3dp</dimen>
+    <dimen name="list_item_widget_bid_price_padding_left_right">10sp</dimen>
+    <dimen name="list_item_widget_change_padding_left_right">3dp</dimen>
+    <dimen name="stock_widget_titlebar_container_padding_left_right">10dp</dimen>
+    <dimen name="stock_widget_imageview_width_height">32dp</dimen>
+    <dimen name="stock_widget_title_textsize">30sp</dimen>
+    <dimen name="stock_widget_title_padding">4dp</dimen>
+    <dimen name="stock_widget_listview_margin_left_right">10dp</dimen>
+    <dimen name="stock_widget_emptyview_textsize">20sp</dimen>
+    <dimen name="widget_min_width">240dp</dimen>
+    <dimen name="widget_min_height">165dp</dimen>
+    <dimen name="no_active_connection_textview_top_bottom_padding">15dp</dimen>
 </resources>

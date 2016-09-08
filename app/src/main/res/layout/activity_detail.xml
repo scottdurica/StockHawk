@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="30dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/detail_container_margin"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/tv_symbol_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/detail_symbol_name_padding"
+            android:paddingTop="@dimen/detail_symbol_name_padding"
+            android:textAllCaps="true"
+            android:textSize="@dimen/detail_symbol_name_textsize"
+            tools:text="GOOG" />
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/material_blue_500"
+            android:padding="@dimen/detail_chartview_container_padding">
+
+            <com.db.chart.view.LineChartView xmlns:chart="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/linechart"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/detail_chartview_layout_height"
+
+                />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/StockSymbolTextStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/detail_static_text_padding"
+                android:paddingTop="@dimen/detail_static_text_padding"
+                android:text="@string/detail_static_current_price"
+
+                />
+
+            <TextView
+                android:id="@+id/tv_current_bid_price"
+                style="@style/BidPriceTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|end"
+                android:paddingLeft="@dimen/detail_common_textview_padding_left_right"
+                android:paddingStart="@dimen/detail_common_textview_padding_left_right"
+                android:paddingRight="@dimen/detail_common_textview_padding_left_right"
+                android:paddingEnd="@dimen/detail_common_textview_padding_left_right"
+                tools:text="1000.00" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/StockSymbolTextStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/detail_static_text_padding"
+                android:paddingTop="@dimen/detail_static_text_padding"
+                android:text="@string/detail_static_30_day_average"
+
+                />
+
+            <TextView
+                android:id="@+id/tv_thirty_day_average"
+                style="@style/BidPriceTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|end"
+                android:paddingRight="@dimen/detail_common_textview_padding_left_right"
+                android:paddingEnd="@dimen/detail_common_textview_padding_left_right"
+                android:paddingLeft="@dimen/detail_common_textview_padding_left_right"
+                android:paddingStart="@dimen/detail_common_textview_padding_left_right"
+                tools:text="1000.00" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/StockSymbolTextStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/detail_static_text_padding"
+                android:paddingTop="@dimen/detail_static_text_padding"
+                android:text="@string/detail_static_30_day_hi_lo"
+
+                />
+
+            <TextView
+                android:id="@+id/tv_high_low"
+                style="@style/BidPriceTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|end"
+                android:paddingRight="@dimen/detail_common_textview_padding_left_right"
+                android:paddingEnd="@dimen/detail_common_textview_padding_left_right"
+                android:paddingLeft="@dimen/detail_common_textview_padding_left_right"
+                android:paddingStart="@dimen/detail_common_textview_padding_left_right"
+                tools:text="1000.00/23.23" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

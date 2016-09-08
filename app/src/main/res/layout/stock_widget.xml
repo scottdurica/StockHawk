@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/widget_bg"
+    android:id="@+id/widget">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/stock_widget_titlebar_container_padding_left_right"
+        android:paddingRight="@dimen/stock_widget_titlebar_container_padding_left_right"
+        android:paddingStart="@dimen/stock_widget_titlebar_container_padding_left_right"
+        android:paddingEnd="@dimen/stock_widget_titlebar_container_padding_left_right"
+        android:background="@color/widget_title_bar_bg">
+
+        <ImageView
+            android:id="@+id/widgetImgLauncher"
+            android:layout_width="@dimen/stock_widget_imageview_width_height"
+            android:layout_height="@dimen/stock_widget_imageview_width_height"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/sh_logo" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/stock_widget_title"
+            android:textSize="@dimen/stock_widget_title_textsize"
+            android:padding="@dimen/stock_widget_title_padding"/>
+
+    </LinearLayout>
+
+    <!-- ListView to be shown on widget -->
+    <ListView
+        android:id="@+id/listViewWidget"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/stock_widget_listview_margin_left_right"
+        android:layout_marginRight="@dimen/stock_widget_listview_margin_left_right"
+        android:layout_marginStart="@dimen/stock_widget_listview_margin_left_right"
+        android:layout_marginEnd="@dimen/stock_widget_listview_margin_left_right"/>
+
+    <!-- Empty view is show if list items are empty -->
+    <TextView
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/tv_empty_widget_lv"
+        android:textColor="@color/material_blue_700"
+        android:textSize="@dimen/stock_widget_emptyview_textsize"
+        android:visibility="gone" />
+
+</LinearLayout>

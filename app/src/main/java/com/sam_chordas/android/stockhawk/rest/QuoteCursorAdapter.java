@@ -78,6 +78,12 @@ public class QuoteCursorAdapter extends CursorRecyclerViewAdapter<QuoteCursorAda
     String symbol = c.getString(c.getColumnIndex(QuoteColumns.SYMBOL));
     mContext.getContentResolver().delete(QuoteProvider.Quotes.withSymbol(symbol), null, null);
     notifyItemRemoved(position);
+//    ComponentName name = new ComponentName(mContext, StockWidget.class);
+//    int[] ids = AppWidgetManager.getInstance(mContext).getAppWidgetIds(name);
+//    Intent intent = new Intent(mContext, StockWidget.class);
+//    intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+//    intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+//    mContext.sendBroadcast(intent);
   }
 
   @Override public int getItemCount() {
