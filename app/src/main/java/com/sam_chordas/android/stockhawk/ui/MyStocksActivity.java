@@ -70,17 +70,6 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
 
     @Subscribe
     public void onNetworkChangeEvent(NetworkChangeEvent event){
-//        Log.e("GETTING HERE" ,"");
-//        if (mNoConnectionView != null){
-//            if (event.show){
-//                mNoConnectionView.setVisibility(View.VISIBLE);
-//                mIsConnected = false;
-//            } else{
-//                mNoConnectionView.setVisibility(View.GONE);
-//                mIsConnected = true;
-//            }
-//        }
-
         if (event.show){
 
             if (mIsConnected == false){
@@ -90,15 +79,12 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                 this.startService(serviceIntent);
                 mIsConnected = true;
             }
-
         }else{
             if(mIsConnected){
                 mNoConnectionView.setVisibility(View.VISIBLE);
                 mIsConnected = false;
             }
-
         }
-
     }
 
     @Override

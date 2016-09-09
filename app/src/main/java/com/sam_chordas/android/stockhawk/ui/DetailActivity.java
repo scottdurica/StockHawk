@@ -5,7 +5,9 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.db.chart.model.LineSet;
 import com.db.chart.model.Point;
@@ -14,11 +16,14 @@ import com.db.chart.view.animation.Animation;
 import com.db.chart.view.animation.easing.LinearEase;
 import com.db.chart.view.animation.style.DashAnimation;
 import com.sam_chordas.android.stockhawk.R;
+import com.sam_chordas.android.stockhawk.rest.NetworkChangeEvent;
 import com.sam_chordas.android.stockhawk.rest.Utils;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,9 +41,37 @@ public class DetailActivity extends Activity {
     float thirtyDayAverage;
     private TextView averageValue;
     private TextView hiLowValue;
+    private TextView mNoConnectionView;
+
+    @Subscribe
+    public void onNetworkChangeEvent(NetworkChangeEvent event){
+
+        if (event.show){
+            mNoConnectionView.setVisibility(View.GONE);
+        }else{
+            mNoConnectionView.setVisibility(View.VISIBLE);
+        }
+
+//        if (event.show){
+//
+//            if (mIsConnected == false){
+//                mNoConnectionView.setVisibility(View.GONE);
+//                Intent serviceIntent = new Intent(this, StockIntentService.class);
+//                serviceIntent.putExtra("tag","init");
+//                this.startService(serviceIntent);
+//                mIsConnected = true;
+//            }
+//        }else{
+//            if(mIsConnected){
+//                mNoConnectionView.setVisibility(View.VISIBLE);
+//                mIsConnected = false;
+//            }
+//        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
@@ -48,16 +81,31 @@ public class DetailActivity extends Activity {
         mContext = this;
         TextView symbolName = (TextView) findViewById(R.id.tv_symbol_name);
         symbolName.setText(symbol);
-        TextView bidPrice = (TextView)findViewById(R.id.tv_current_bid_price);
-        averageValue = (TextView)findViewById(R.id.tv_thirty_day_average);
-        hiLowValue = (TextView)findViewById(R.id.tv_high_low);
+        TextView bidPrice = (TextView) findViewById(R.id.tv_current_bid_price);
+        averageValue = (TextView) findViewById(R.id.tv_thirty_day_average);
+        hiLowValue = (TextView) findViewById(R.id.tv_high_low);
+        mNoConnectionView = (TextView)findViewById(R.id.tv_detail_no_connection_message);
         bidPrice.setText(getIntent().getStringExtra("bid_price"));
         FetchHistoricalDataTask task = new FetchHistoricalDataTask();
-        task.execute(symbol);
+        if (Utils.connectedToNetwork(this)){
+            task.execute(symbol);
+        }else{
+            Toast.makeText(this,"Connect to network for stock details",Toast.LENGTH_LONG).show();
+        }
+
 
     }
 
-
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+    @Override
+    protected void onStart() {
+        EventBus.getDefault().register(this);
+        super.onStart();
+    }
     class FetchHistoricalDataTask extends AsyncTask<String, String, ArrayList<Point>> {
 
 
@@ -125,8 +173,8 @@ public class DetailActivity extends Activity {
         @Override
         protected void onPostExecute(ArrayList<Point> arrayList) {
 
-            averageValue.setText(String.format("%.2f",thirtyDayAverage));
-            hiLowValue.setText(String.format("%.2f",maxVal)+"/"+String.format("%.2f",minVal));
+            averageValue.setText(String.format("%.2f", thirtyDayAverage));
+            hiLowValue.setText(String.format("%.2f", maxVal) + "/" + String.format("%.2f", minVal));
             int maxStep = (int) maxVal + 5;
             int minStep = (int) minVal - 5;
 
@@ -208,8 +256,8 @@ public class DetailActivity extends Activity {
                             minVal = value;
                         }
                     }
-                    float totalEntries = (float)itemsCount;
-                    thirtyDayAverage = bidsTotal/totalEntries;
+                    float totalEntries = (float) itemsCount;
+                    thirtyDayAverage = bidsTotal / totalEntries;
                     return pointsList;
                 }
             } catch (JSONException e) {
