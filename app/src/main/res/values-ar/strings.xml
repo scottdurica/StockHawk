@@ -27,5 +27,7 @@
     <string name="no_active_connection_message">غير متصل. قد تكون قديمة البيانات.</string>
     <string name="no_network_no_add_allowed">لا توجد شبكة. لا يمكن إضافة الأسهم.</string>
     <string name="no_network_no_details_view">لا توجد شبكة. لا يمكن أن تظهر تفاصيل الأسهم .</string>
+    <string name="detail_toast_connect_to_network">الاتصال بالشبكة للحصول على تفاصيل الأسهم</string>
+    <string name="detail_no_network_connection_textview">لا يوجد اتصال بالشبكة</string>
 
 </resources>

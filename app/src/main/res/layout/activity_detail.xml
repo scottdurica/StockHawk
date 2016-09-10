@@ -31,20 +31,29 @@
             android:background="@color/material_blue_500"
             android:padding="@dimen/detail_chartview_container_padding">
 
+            <TextView
+                android:id="@+id/tv_detail_no_connection_message"
+                style="@style/BidPriceTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/detail_no_network_connection_textview"
+                android:visibility="gone" />
+
             <com.db.chart.view.LineChartView xmlns:chart="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/linechart"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/detail_chartview_layout_height"
+                android:contentDescription="@string/cd_chartview"/>
 
-                />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/tv_detail_no_connection_message"
-                android:text="No network onnection"
-                style="@style/BidPriceTextStyle"
-                android:gravity="center"
-                android:visibility="gone"/>
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/progress_spinner_chartview"
+                android:progressDrawable="@drawable/circle_progress_bar"
+                android:visibility="gone"
+                android:layout_gravity="center"/>
+
         </FrameLayout>
 
         <LinearLayout
@@ -58,6 +67,7 @@
                 android:paddingBottom="@dimen/detail_static_text_padding"
                 android:paddingTop="@dimen/detail_static_text_padding"
                 android:text="@string/detail_static_current_price"
+                android:id="@+id/label_current_price"
 
                 />
 
@@ -67,10 +77,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical|end"
-                android:paddingLeft="@dimen/detail_common_textview_padding_left_right"
-                android:paddingStart="@dimen/detail_common_textview_padding_left_right"
-                android:paddingRight="@dimen/detail_common_textview_padding_left_right"
                 android:paddingEnd="@dimen/detail_common_textview_padding_left_right"
+                android:paddingLeft="@dimen/detail_common_textview_padding_left_right"
+                android:paddingRight="@dimen/detail_common_textview_padding_left_right"
+                android:paddingStart="@dimen/detail_common_textview_padding_left_right"
                 tools:text="1000.00" />
         </LinearLayout>
 
@@ -85,6 +95,7 @@
                 android:paddingBottom="@dimen/detail_static_text_padding"
                 android:paddingTop="@dimen/detail_static_text_padding"
                 android:text="@string/detail_static_30_day_average"
+                android:id="@+id/label_30_day_average"
 
                 />
 
@@ -94,12 +105,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical|end"
-                android:paddingRight="@dimen/detail_common_textview_padding_left_right"
                 android:paddingEnd="@dimen/detail_common_textview_padding_left_right"
                 android:paddingLeft="@dimen/detail_common_textview_padding_left_right"
+                android:paddingRight="@dimen/detail_common_textview_padding_left_right"
                 android:paddingStart="@dimen/detail_common_textview_padding_left_right"
                 tools:text="1000.00" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -111,6 +123,7 @@
                 android:paddingBottom="@dimen/detail_static_text_padding"
                 android:paddingTop="@dimen/detail_static_text_padding"
                 android:text="@string/detail_static_30_day_hi_lo"
+                android:id="@+id/label_30_day_hilo"
 
                 />
 
@@ -120,9 +133,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical|end"
-                android:paddingRight="@dimen/detail_common_textview_padding_left_right"
                 android:paddingEnd="@dimen/detail_common_textview_padding_left_right"
                 android:paddingLeft="@dimen/detail_common_textview_padding_left_right"
+                android:paddingRight="@dimen/detail_common_textview_padding_left_right"
                 android:paddingStart="@dimen/detail_common_textview_padding_left_right"
                 tools:text="1000.00/23.23" />
         </LinearLayout>

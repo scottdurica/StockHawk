@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.IntDef;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,72 +32,94 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class DetailActivity extends Activity {
 
     private Context mContext;
 
-    private LineChartView chartView;
+    @BindView(R.id.linechart) LineChartView chartView;
+    @BindView(R.id.tv_thirty_day_average) TextView averageValue;
+    @BindView(R.id.tv_high_low) TextView hiLowValue;
+    @BindView(R.id.tv_current_bid_price) TextView bidPrice;
+    @BindView(R.id.tv_detail_no_connection_message) TextView mNoConnectionView;
+    @BindView(R.id.label_30_day_hilo) TextView mLabel30HiLo;
+    @BindView(R.id.label_30_day_average) TextView mLabel30Average;
+    @BindView(R.id.label_current_price) TextView mLabelCurrentPrice;
+    @BindView(R.id.tv_symbol_name) TextView mSymbolName;
+    @BindView(R.id.progress_spinner_chartview) ProgressBar mProgressBar;
     float thirtyDayAverage;
-    private TextView averageValue;
-    private TextView hiLowValue;
-    private TextView mNoConnectionView;
+    private String mSymbol;
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({VIEW_STATE_CONNECTED,VIEW_STATE_NO_NETWORK})
+    public @interface ViewState{}
+    final int VIEW_STATE_CONNECTED = 1;
+    final int VIEW_STATE_NO_NETWORK = 2;
+
+
 
     @Subscribe
     public void onNetworkChangeEvent(NetworkChangeEvent event){
 
         if (event.show){
-            mNoConnectionView.setVisibility(View.GONE);
+            setViews(VIEW_STATE_CONNECTED);
+            fetchData(mSymbol);
         }else{
-            mNoConnectionView.setVisibility(View.VISIBLE);
+            setViews(VIEW_STATE_NO_NETWORK);
         }
 
-//        if (event.show){
-//
-//            if (mIsConnected == false){
-//                mNoConnectionView.setVisibility(View.GONE);
-//                Intent serviceIntent = new Intent(this, StockIntentService.class);
-//                serviceIntent.putExtra("tag","init");
-//                this.startService(serviceIntent);
-//                mIsConnected = true;
-//            }
-//        }else{
-//            if(mIsConnected){
-//                mNoConnectionView.setVisibility(View.VISIBLE);
-//                mIsConnected = false;
-//            }
-//        }
     }
-
+    @ViewState
+    private void setViews(@ViewState int state){
+        if (state == VIEW_STATE_CONNECTED){
+            mNoConnectionView.setVisibility(View.GONE);
+            chartView.setVisibility(View.VISIBLE);
+            averageValue.setVisibility(View.VISIBLE);
+            hiLowValue.setVisibility(View.VISIBLE);
+            bidPrice.setVisibility(View.VISIBLE);
+            mLabel30Average.setVisibility(View.VISIBLE);
+            mLabel30HiLo.setVisibility(View.VISIBLE);
+            mLabelCurrentPrice.setVisibility(View.VISIBLE);
+        }else{
+            mNoConnectionView.setVisibility(View.VISIBLE);
+            chartView.setVisibility(View.INVISIBLE);
+            averageValue.setVisibility(View.INVISIBLE);
+            hiLowValue.setVisibility(View.INVISIBLE);
+            bidPrice.setVisibility(View.INVISIBLE);
+            mLabel30Average.setVisibility(View.INVISIBLE);
+            mLabel30HiLo.setVisibility(View.INVISIBLE);
+            mLabelCurrentPrice.setVisibility(View.INVISIBLE);
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-
-        String symbol = getIntent().getStringExtra("Symbol");
-//        Log.e("Sent symbol is: ", symbol);
-        chartView = (LineChartView) findViewById(R.id.linechart);
         mContext = this;
-        TextView symbolName = (TextView) findViewById(R.id.tv_symbol_name);
-        symbolName.setText(symbol);
-        TextView bidPrice = (TextView) findViewById(R.id.tv_current_bid_price);
-        averageValue = (TextView) findViewById(R.id.tv_thirty_day_average);
-        hiLowValue = (TextView) findViewById(R.id.tv_high_low);
-        mNoConnectionView = (TextView)findViewById(R.id.tv_detail_no_connection_message);
+        ButterKnife.bind(this);
+        mSymbol = getIntent().getStringExtra("Symbol");
+        mSymbolName.setText(mSymbol);
         bidPrice.setText(getIntent().getStringExtra("bid_price"));
-        FetchHistoricalDataTask task = new FetchHistoricalDataTask();
         if (Utils.connectedToNetwork(this)){
-            task.execute(symbol);
+            fetchData(mSymbol);
         }else{
-            Toast.makeText(this,"Connect to network for stock details",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.detail_toast_connect_to_network,Toast.LENGTH_LONG).show();
+            mNoConnectionView.setVisibility(View.VISIBLE);
         }
 
-
     }
-
+    private void fetchData(String symbol){
+        FetchHistoricalDataTask task = new FetchHistoricalDataTask();
+        task.execute(symbol);
+    }
     @Override
     protected void onStop() {
         EventBus.getDefault().unregister(this);
@@ -108,14 +132,10 @@ public class DetailActivity extends Activity {
     }
     class FetchHistoricalDataTask extends AsyncTask<String, String, ArrayList<Point>> {
 
-
         private String LOG_TAG = FetchHistoricalDataTask.class.getSimpleName();
         private OkHttpClient client = new OkHttpClient();
-
-        private StringBuilder mStoredSymbols = new StringBuilder();
         private float maxVal = 0;
         private float minVal = 100000;
-
 
 //      https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.historicaldata%20where%20symbol%20%3D%20%22YHOO%22%20and%20startDate%20%3D%20%222009-09-11%22%20and%20endDate%20%3D%20%222010-03-10%22&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=
 
@@ -130,7 +150,6 @@ public class DetailActivity extends Activity {
             String endDate = dates[1];
             String urlString;
             String getResponse;
-
 
             try {
                 // Base URL for the Yahoo query
@@ -147,16 +166,13 @@ public class DetailActivity extends Activity {
 
             if (urlStringBuilder != null) {
                 urlString = urlStringBuilder.toString();
-//                Log.e("MY STRING", urlString);
                 try {
                     getResponse = fetchData(urlString);
-//                    Log.e("Response", getResponse);
                     return parseJsonToArray(getResponse);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-
 
             return dataList;
         }
@@ -171,13 +187,19 @@ public class DetailActivity extends Activity {
         }
 
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mProgressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
         protected void onPostExecute(ArrayList<Point> arrayList) {
 
             averageValue.setText(String.format("%.2f", thirtyDayAverage));
             hiLowValue.setText(String.format("%.2f", maxVal) + "/" + String.format("%.2f", minVal));
             int maxStep = (int) maxVal + 5;
             int minStep = (int) minVal - 5;
-
+            //Adjust top and bottom range of line chart.  Must be divisible by the step value
             do {
                 maxStep++;
             } while (maxStep % 5 != 0);
@@ -193,27 +215,21 @@ public class DetailActivity extends Activity {
             }
             Animation animation = new Animation(2000);
             animation.setEasing(new LinearEase());
-
             dataSet.setDotsColor(getResources().getColor(R.color.material_blue_500));
             dataSet.setDotsStrokeColor(getResources().getColor(R.color.white));
             dataSet.setDotsStrokeThickness(5f);
-
             dataSet.setDotsRadius(10);
             dataSet.setThickness(6);
             dataSet.setDashed(new float[]{10.0f, 10.0f});
             dataSet.setColor(getResources().getColor(R.color.white));
             dataSet.setFill(getResources().getColor(R.color.material_blue_700));
             chartView.setLabelsColor(getResources().getColor(R.color.white));
-
-//            chartView.setStep(20);
             chartView.setAxisBorderValues(minStep, maxStep, 5);
             chartView.setAxisLabelsSpacing(50.0f);
-
             chartView.setXAxis(false);
             chartView.setYAxis(false);
-
             chartView.addData(dataSet);
-
+            mProgressBar.setVisibility(View.INVISIBLE);
             chartView.show(animation);
             chartView.animateSet(0, new DashAnimation());
         }

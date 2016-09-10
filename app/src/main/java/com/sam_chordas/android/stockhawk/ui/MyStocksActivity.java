@@ -16,7 +16,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.InputType;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,6 +43,9 @@ import com.sam_chordas.android.stockhawk.widget.StockWidget;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MyStocksActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,
         SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -60,12 +62,10 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     private static final int CURSOR_LOADER_ID = 0;
     private QuoteCursorAdapter mCursorAdapter;
     private Context mContext;
-    private Cursor mCursor;
     boolean mIsConnected;
-
-    private RecyclerView mRecyclerView;
-    private TextView mEmptyView;
-    private TextView mNoConnectionView;
+    @BindView(R.id.recycler_view) RecyclerView mRecyclerView;
+    @BindView(R.id.tv_empty_rv_view) TextView mEmptyView;
+    @BindView(R.id.tv_no_active_connection) TextView mNoConnectionView;
 
 
     @Subscribe
@@ -97,20 +97,17 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     protected void onStart() {
         EventBus.getDefault().register(this);
         super.onStart();
-        Log.e("ONSTART " ,"CALLED");
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
-
         mIsConnected = Utils.connectedToNetwork(mContext);
         setContentView(R.layout.activity_my_stocks);
+        ButterKnife.bind(this);
         // The intent service is for executing immediate pulls from the Yahoo API
         // GCMTaskService can only schedule tasks, they cannot execute immediately
-        mEmptyView = (TextView) findViewById(R.id.tv_empty_rv_view);
-        mNoConnectionView = (TextView) findViewById(R.id.tv_no_active_connection);
         mServiceIntent = new Intent(this, StockIntentService.class);
         if (savedInstanceState == null) {
             // Run the initialize task service so that some stocks appear upon an empty database
@@ -125,10 +122,9 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                     //data in table, but no network connection.
                     mNoConnectionView.setVisibility(View.VISIBLE);
                 }
-                mEmptyView.setText("No Network Connection");
+                mEmptyView.setText(R.string.detail_no_network_connection_textview);
             }
         }
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         getLoaderManager().initLoader(CURSOR_LOADER_ID, null, this);
 
@@ -149,12 +145,9 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                         }else{
                             networkToast(getResources().getString(R.string.no_network_no_details_view));
                         }
-
-
                     }
                 }));
         mRecyclerView.setAdapter(mCursorAdapter);
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.attachToRecyclerView(mRecyclerView);
@@ -166,7 +159,6 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                 }else{
                     networkToast(getResources().getString(R.string.no_network_no_add_allowed));
                 }
-
             }
         });
 
@@ -177,11 +169,8 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         mTitle = getTitle();
         if (mIsConnected) {
             long period = 3600L;
-//            long period = 8L;
-//            long flex = 3L;
             long flex = 10L;
             String periodicTag = "periodic";
-
             // create a periodic task to pull stocks once every hour after the app has been opened. This
             // is so Widget data stays up to date.
             PeriodicTask periodicTask = new PeriodicTask.Builder()
@@ -202,9 +191,6 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         String symbol = getSharedPreferences(Utils.APP_PREFS, 0).getString(getString(R.string.pref_invalid_stock_symbol), "");
         if (symbol.isEmpty() == false) {
-
-
-//            showInputDialog("Cannot add symbol " + symbol + "\n" + "Please try again" + "\n\n");
             showInputDialog(getResources().getString(R.string.input_dialog_pre_variable)+ " " + symbol + "\n" +
                     getResources().getString(R.string.input_dialog_post_variable) + "\n\n");
         }
@@ -219,8 +205,6 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                 .input(R.string.input_hint, R.string.input_prefill, new MaterialDialog.InputCallback() {
                     @Override
                     public void onInput(MaterialDialog dialog, CharSequence input) {
-                        // On FAB click, receive user input. Make sure the stock doesn't already exist
-                        // in the DB and proceed accordingly
                         Cursor c = getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
                                 new String[]{QuoteColumns.SYMBOL}, QuoteColumns.SYMBOL + "= ?",
                                 new String[]{input.toString()}, null);
@@ -312,7 +296,6 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
         mCursorAdapter.swapCursor(data);
-        mCursor = data;
         if (!data.moveToFirst()) {
             mRecyclerView.setVisibility(View.GONE);
             mEmptyView.setVisibility(View.VISIBLE);
@@ -325,7 +308,6 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
         int[] ids = AppWidgetManager.getInstance(mContext).getAppWidgetIds(name);
         Intent intent = new Intent(mContext, StockWidget.class);
         intent.setAction(StockTaskService.ACTION_DATA_UPDATED);
-//        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
         mContext.sendBroadcast(intent);
     }

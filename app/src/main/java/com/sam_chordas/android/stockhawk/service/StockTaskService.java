@@ -124,7 +124,7 @@ public class StockTaskService extends GcmTaskService {
 
         if (urlStringBuilder != null) {
             urlString = urlStringBuilder.toString();
-//            Log.e("URL " , urlString);
+
 //            https://query.yahooapis.com/v1/public/yql?q=select+*+from+yahoo.finance.quotes+where+symbol+in+%28%22YHOO%22%2C%22AAPL%22%2C%22GOOG%22%2C%22dvax%22%29&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=
 //            https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.historicaldata%20where%20symbol%20%3D%20%22YHOO%22%20and%20startDate%20%3D%20%222009-09-11%22%20and%20endDate%20%3D%20%222010-03-10%22&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=
             try {
@@ -151,21 +151,14 @@ public class StockTaskService extends GcmTaskService {
 
                     mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY, symbols);
                     mContext.getContentResolver().notifyChange(QuoteProvider.Quotes.CONTENT_URI,null);
-//                    Intent widgetUpdateIntent = new Intent();
-//                    widgetUpdateIntent.setAction(ACTION_DATA_UPDATED);
-//                    widgetUpdateIntent.setPackage(mContext.getPackageName());
-//                    mContext.sendBroadcast(widgetUpdateIntent);
 
                     ComponentName name = new ComponentName(mContext, StockWidget.class);
                     int[] ids = AppWidgetManager.getInstance(mContext).getAppWidgetIds(name);
                     Intent intent = new Intent(mContext, StockWidget.class);
                     intent.setAction(StockTaskService.ACTION_DATA_UPDATED);
-//        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
                     intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
                     mContext.sendBroadcast(intent);
 
-//                    mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY,
-//                            Utils.quoteJsonToContentVals(getResponse));
                 } catch (RemoteException | OperationApplicationException e) {
                     Log.e(LOG_TAG, "Error applying batch insert", e);
                 }
